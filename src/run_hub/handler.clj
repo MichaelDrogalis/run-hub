@@ -1,10 +1,12 @@
 (ns run-hub.handler
-  (:use compojure.core)
-  (:require [compojure.handler :as handler]
-            [compojure.route :as route]))
+  (:require [compojure.core :refer :all]
+            [compojure.handler :as handler]
+            [compojure.route :as route]
+            [run-hub.views.log :as log-views]))
 
 (defroutes app-routes
-  (GET "/" [] "Hello World")
+  (GET "/MikeDrogalis/log" [] (log-views/mikes-log))
+  (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app
