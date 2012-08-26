@@ -30,10 +30,9 @@
   (let [current-date (:when current-training)
         current-workouts (:workouts current-training)
         start-of-week (previous-sunday current-date)
-        current-week-training (get all-training start-of-week [])]
-    (assoc all-training start-of-week
-           (concat current-week-training current-workouts))))
-    
+        workouts-this-week (filter #(= start-of-week (:when %)) all-training)]
+  (concat all-training [{:when start-of-week :workouts (:workouts current-training)}])))
+
 (defn group-by-week [training]
   (let [ordered-training (order-training-by-date training)]
     (reduce compress-training {} ordered-training)))
@@ -42,8 +41,8 @@
   (order-training-by-date  
    (map
     (fn [session]
-      {(first session)
-       {:miles (apply + (map identity (map :length (second session))))
-        :workouts (second session)}})
+      {:when (:when session)
+       :miles (apply + (map identity (map :length (second session))))
+       :workouts (:workouts session)})
     training)))
 

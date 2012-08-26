@@ -45,45 +45,42 @@
 
 (facts
  "Days of the same week stack inside the same map key"
- (fact (log/compress-training {}
+ (fact (log/compress-training []
                               {:when (time/date-time 2012 1 1) :workouts []})
-       =>  {(time/date-time 2012 1 1) []})
+       => [{:when (time/date-time 2012 1 1) :workouts []}])
  
- (fact (log/compress-training {(time/date-time 2012 1 1) [1]}
+ (fact (log/compress-training [{:when (time/date-time 2012 1 1) :workouts [1]}]
                               {:when (time/date-time 2012 1 20) :workouts [2]})
-       => {(time/date-time 2012 1 1) [1]
-           (time/date-time 2012 1 15) [2]})
+       => [{:when (time/date-time 2012 1 1) :workouts [1]}
+           {:when (time/date-time 2012 1 15) :workouts [2]}])
  
- (fact (log/compress-training {(time/date-time 2012 1 1) [1]}
+ (future-fact (log/compress-training {:when (time/date-time 2012 1 1) :workouts [1]}
                               {:when (time/date-time 2012 1 2) :workouts [2]})
-       => {(time/date-time 2012 1 1) [1 2]}))
+       => [{:when (time/date-time 2012 1 1) :workouts [1 2]}]))
 
-(fact
+(future-fact
  "Workouts can be grouped by week"
  (let [future-week {:when (time/date-time 2012 1 20) :workouts [5]}
        past-week {:when (time/date-time 2012 1 2) :workouts [3 4]}
        very-past-week {:when (time/date-time 2012 1 1) :workouts [1 2]}
        training [future-week past-week very-past-week]]
    (log/group-by-week training)
-   => {(time/date-time 2012 1 1) [1 2 3 4]
-       (time/date-time 2012 1 15) [5]}))
+   => [{:when (time/date-time 2012 1 1) :workouts [1 2 3 4]}
+       {:when (time/date-time 2012 1 15) :workouts [5]}]))
 
-(comment
-(facts
+(future-facts
  "Mileage per week is calculated"
  (fact
   (let [training
-        (log/group-by-week [{(time/date-time 2012 1 1) [{:length 10}]}
-                            {(time/date-time 2012 1 2) [{:length 20}]}])]
+        (log/group-by-week [{:when (time/date-time 2012 1 1) :workouts [{:length 10}]}
+                            {:when (time/date-time 2012 1 2) :workouts [{:length 20}]}])]
     (log/miles-per-week training)
-    => [{(time/date-time 2012 1 1) {:miles 30 :workouts [{:length 10} {:length 20}]}}]))
- (fact
+    => [{:when (time/date-time 2012 1 1) :miles 30 :workouts [{:length 10} {:length 20}]}]))
   (let [training
-        (log/group-by-week [{(time/date-time 2012 1 1) [{:length 10}]}
-                            {(time/date-time 2012 1 2) [{:length 20}]}
-                            {(time/date-time 2011 1 2) [{:length 50}]}])]
+        (log/group-by-week [{:when (time/date-time 2012 1 1) :workouts [{:length 10}]}
+                            {:when (time/date-time 2012 1 2) :workouts [{:length 20}]}
+                            {:when (time/date-time 2011 1 2) :workouts [{:length 50}]}])]
     (log/miles-per-week training)
     => [{(time/date-time 2011 1 2) {:miles 50 :workouts [{:length 50}]}}
-        {(time/date-time 2012 1 1) {:miles 30 :workouts [{:length 10} {:length 20}]}}])))
+        {(time/date-time 2012 1 1) {:miles 30 :workouts [{:length 10} {:length 20}]}}]))
 
-)
