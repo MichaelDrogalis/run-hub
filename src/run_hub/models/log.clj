@@ -18,31 +18,25 @@
     (format/parse format date)))
 
 (defn order-training-by-date [training]
-  (sort-by
-   (fn [workout-map]
-     (first (keys workout-map)))
-   training))
+  (sort-by :when training))
 
 (defn previous-sunday [date]
   (let [day-of-week (.getAsText (.dayOfWeek date))]
     (if (= day-of-week "Sunday")
       date
-      (recur (.minusDays date 1)))))
+      (recur (time/minus date (time/days 1))))))
 
-(defn compress-training [training session-date workouts]
-  (let [start-of-week (previous-sunday session-date)]
-    (assoc training start-of-week
-           (concat (get training start-of-week []) workouts))))
+(defn compress-training [all-training current-training]
+  (let [current-date (:when current-training)
+        current-workouts (:workouts current-training)
+        start-of-week (previous-sunday current-date)
+        current-week-training (get all-training start-of-week [])]
+    (assoc all-training start-of-week
+           (concat current-week-training current-workouts))))
     
 (defn group-by-week [training]
   (let [ordered-training (order-training-by-date training)]
-    (reduce
-     (fn [all-training session]
-       (let [date (first (keys session))
-             workouts (first (vals session))]
-         (compress-training all-training date workouts)))
-     {}
-     ordered-training)))
+    (reduce compress-training {} ordered-training)))
 
 (defn miles-per-week [training]
   (order-training-by-date  
