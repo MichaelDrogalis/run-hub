@@ -59,7 +59,7 @@
    (map
     (fn [session]
       {:when (:when session)
-       :miles (apply + (map identity (map :length (second session))))
+       :miles (apply + (map identity (map :length (:workouts session))))
        :workouts (:workouts session)})
     training)))
 

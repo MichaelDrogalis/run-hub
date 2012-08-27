@@ -80,7 +80,7 @@
    => [{:when (time/date-time 2012 1 1) :workouts [1 2 3 4]}
        {:when (time/date-time 2012 1 15) :workouts [5]}]))
 
-(future-facts
+(facts
  "Mileage per week is calculated"
  (fact
   (let [training
@@ -88,11 +88,12 @@
                             {:when (time/date-time 2012 1 2) :workouts [{:length 20}]}])]
     (log/miles-per-week training)
     => [{:when (time/date-time 2012 1 1) :miles 30 :workouts [{:length 10} {:length 20}]}]))
+ (fact
   (let [training
         (log/group-by-week [{:when (time/date-time 2012 1 1) :workouts [{:length 10}]}
                             {:when (time/date-time 2012 1 2) :workouts [{:length 20}]}
                             {:when (time/date-time 2011 1 2) :workouts [{:length 50}]}])]
     (log/miles-per-week training)
-    => [{(time/date-time 2011 1 2) {:miles 50 :workouts [{:length 50}]}}
-        {(time/date-time 2012 1 1) {:miles 30 :workouts [{:length 10} {:length 20}]}}]))
+    => [{:when (time/date-time 2011 1 2) :miles 50 :workouts [{:length 50}]}
+        {:when (time/date-time 2012 1 1) :miles 30 :workouts [{:length 10} {:length 20}]}])))
 
