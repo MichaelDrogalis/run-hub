@@ -8,20 +8,23 @@
     markup))
 
 (defn workout-description [workout]
-  [:div.ten.columns.workout-description
+  [:div.ten.columns
    [:div.row
-    [:div.five.columns
+    [:div.ten.columns.workout-description
      [:div.row
-      [:div.five.columns.offset-by-one.workout-metric
-       (:type workout)]      
-      [:div.five.columns.offset-by-one.workout-metric
-       (render-if (:miles workout) (str (:miles workout) " miles"))]]
-     [:div.row
-      [:div.five.columns.offset-by-one.workout-metric
-       (render-if (:pace workout) (str (:pace workout) " min/mile"))]
-      [:div.five.columns.offset-by-one.workout-metric
-       (:duration workout)]]]
-    [:div.seven.columns.workout-metric (:notes workout)]]])
+      [:div.five.columns
+       [:div.row
+        [:div.five.columns.offset-by-one.workout-metric
+         (:type workout)]      
+        [:div.five.columns.offset-by-one.workout-metric
+         (render-if (:miles workout) (str (:miles workout) " miles"))]]
+       [:div.row
+        [:div.five.columns.offset-by-one.workout-metric
+         (render-if (:pace workout) (str (:pace workout) " min/mile"))]
+        [:div.five.columns.offset-by-one.workout-metric
+         (:duration workout)]]]
+      [:div.seven.columns.workout-metric (:notes workout)]]]
+    [:div.two.columns]]])
 
 (defn mikes-log [training]
   (html
