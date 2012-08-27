@@ -43,7 +43,7 @@
  (fact (log/previous-sunday (time/date-time 2012 1 1))
        => (time/date-time 2012 1 1)))
 
-(future-facts
+(facts
  "Days of the same week stack inside the same map key"
  (fact (log/compress-training []
                               {:when (time/date-time 2012 1 1) :workouts []})
@@ -54,17 +54,17 @@
        => [{:when (time/date-time 2012 1 1) :workouts [1]}
            {:when (time/date-time 2012 1 15) :workouts [2]}])
  
- (fact (log/compress-training {:when (time/date-time 2012 1 1) :workouts [1]}
+ (future-fact (log/compress-training {:when (time/date-time 2012 1 1) :workouts [1]}
                               {:when (time/date-time 2012 1 2) :workouts [2]})
        => [{:when (time/date-time 2012 1 1) :workouts [1 2]}]))
 
 (facts
- (fact (log/find-in-array-map [{:a 1 :b 2} {:c 3 :d 4}] :a) => {:a 1 :b 2})
- (fact (log/find-in-array-map [{:a 1 :b 2}] :b) => {:a 1 :b 2})
- (fact (log/find-in-array-map [] :a) => {}))
+ (fact (log/find-in-array-map [{:a 1 :b 2} {:c 3 :d 4}] :a 1) => {:a 1 :b 2})
+ (fact (log/find-in-array-map [{:a 1 :b 2}] :b 2) => {:a 1 :b 2})
+ (fact (log/find-in-array-map [] :a 1) => {}))
 
 (facts
- (fact (log/update-in-array-map [{:a 1}] :a 2) => [{:a 2}])
+ (fact (log/update-in-array-map [{:a 1}] :a 2 :b 3) => [{:a 2 :b 3}])
  (fact (log/update-in-array-map [{:a 1} {:b 2} {:c 3}] :c 4) => [{:a 1} {:b 2} {:c 4}]))
 
 (future-fact

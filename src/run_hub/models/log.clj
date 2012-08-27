@@ -26,26 +26,30 @@
       date
       (recur (time/minus date (time/days 1))))))
 
-(defn find-in-array-map [array-map key]
+(defn find-in-array-map [array-map key value]
   (if (empty? array-map)
     {}
-    (if (some (into #{} (keys (first array-map))) [key])
+    (if (filter (fn [[k v]] (and (= k key) (= v value))) (first array-map))
       (first array-map)
-      (recur (rest array-map) key))))
+      (recur (rest array-map) key value))))
 
-(defn update-in-array-map [array-map key value]
-  (map
-   #(if (= key (first (keys %)))
-      {key value}
-      %)
-   array-map))
+(defn update-in-array-map [array-map key value & extra-vals]
+  (if (not (= (find-in-array-map array-map key value) {}))
+    (do
+      (map
+       #(if (= key (first (keys %)))
+          (merge {key value} (apply hash-map extra-vals))
+          %)
+       array-map))
+    (do
+      (concat array-map [(merge {key value} (apply hash-map extra-vals))]))))
 
 (defn compress-training [all-training current-training]
   (let [current-date (:when current-training)
         current-workouts (:workouts current-training)
         start-of-week (previous-sunday current-date)
-        workouts-this-week (filter #(= start-of-week (:when %)) all-training)]
-  (concat all-training [{:when start-of-week :workouts (:workouts current-training)}])))
+        workouts-this-week (find-in-array-map all-training :when start-of-week)]
+    (update-in-array-map all-training :when start-of-week :workouts (concat workouts-this-week current-workouts))))
 
 (defn group-by-week [training]
   (let [ordered-training (order-training-by-date training)]
