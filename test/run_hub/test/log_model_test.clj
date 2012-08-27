@@ -25,6 +25,12 @@
  (fact (log/parse-date "8/20/2012") => (time/date-time 2012 8 20))
  (fact (log/parse-date "10/17/2011") => (time/date-time 2011 10 17)))
 
+(facts
+ "I can get the name of the day for a date"
+ (fact (log/day-name-for (time/date-time 2012 1 1)) => "Sunday")
+ (fact (log/day-name-for (time/date-time 2012 8 27)) => "Monday") 
+ (fact (log/day-name-for (time/date-time 2012 8 31)) => "Friday"))
+ 
 (fact
  "An input of my training as a map produces a sequence of
   of dates and workouts, ordered by date from past to future"

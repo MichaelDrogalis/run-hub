@@ -17,6 +17,9 @@
   (let [format (format/formatter "MM/dd/yyyy")]
     (format/parse format date)))
 
+(defn day-name-for [date]
+  (.getAsText (.dayOfWeek date)))
+
 (defn order-training-by-date [training]
   (sort-by :when training))
 

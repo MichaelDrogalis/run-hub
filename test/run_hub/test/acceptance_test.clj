@@ -12,10 +12,11 @@
       (text "#runner-info")
       => "Log of Mike Drogalis")
 
-(fact "It has the first date of my training as January 1, 2012"
-      (to (local "/MikeDrogalis/log"))
-      (.contains (text "#training-log") "January 1, 2012")
-      => true)
+(fact
+ "It has the first date of training as August 19, 2012"
+ (to (local "/MikeDrogalis/log"))
+ (.contains (text "#training-log") "August 19, 2012")
+ => true)
 
 (quit)
 
