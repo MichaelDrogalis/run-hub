@@ -70,7 +70,7 @@
  (fact (log/update-in-array-map [{:a 1} {:b 2} {:c 3}] :c 4 :d 5) => [{:a 1} {:b 2} {:c 3} {:c 4 :d 5}])
  (fact (log/update-in-array-map [{:a 1 :b 2}] :b 2 :c 3) => [{:a 1 :b 2 :c 3}]))
 
-(future-fact
+(fact
  "Workouts can be grouped by week"
  (let [future-week {:when (time/date-time 2012 1 20) :workouts [5]}
        past-week {:when (time/date-time 2012 1 2) :workouts [3 4]}

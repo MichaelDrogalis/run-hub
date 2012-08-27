@@ -36,13 +36,12 @@
 (defn update-in-array-map [array-map key value & extra-vals]
   (if (not (= (find-in-array-map array-map key value) {}))
     (map
-     (fn [e]
-       (if (and (some (into #{} (keys e)) [key])
-                (some (into #{} (vals e)) [value]))
-         (merge e (apply hash-map extra-vals))
-         e))
-       array-map)
-    (concat array-map [(merge {key value} (apply hash-map extra-vals))])))
+     #(if (and (some (into #{} (keys %)) [key])
+               (some (into #{} (vals %)) [value]))
+        (merge % (apply hash-map extra-vals))
+        %)
+    array-map)
+  (concat array-map [(merge {key value} (apply hash-map extra-vals))])))
 
 (defn compress-training [all-training current-training]
   (let [current-date (:when current-training)
