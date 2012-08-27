@@ -1,3 +1,11 @@
+/* App */
+
+body {
+    background-color: #f4f4f4;
+}
+
+/* End app */
+
 #runner-info {
     text-align: center;
 }
@@ -8,5 +16,12 @@
 
 .full-date {
     text-align: center;
-    font-size: 12px;
+}
+
+.workout-description {
+    margin: 14px 0 14px 0;
+}
+
+.workout-metric {
+    margin-bottom: 6px;
 }
