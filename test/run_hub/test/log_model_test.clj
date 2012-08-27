@@ -54,7 +54,7 @@
        => [{:when (time/date-time 2012 1 1) :workouts [1]}
            {:when (time/date-time 2012 1 15) :workouts [2]}])
  
- (future-fact (log/compress-training {:when (time/date-time 2012 1 1) :workouts [1]}
+ (fact (log/compress-training [{:when (time/date-time 2012 1 1) :workouts [1]}]
                               {:when (time/date-time 2012 1 2) :workouts [2]})
        => [{:when (time/date-time 2012 1 1) :workouts [1 2]}]))
 

@@ -35,12 +35,11 @@
      
 (defn update-in-array-map [array-map key value & extra-vals]
   (if (not (= (find-in-array-map array-map key value) {}))
-    (do
-      (map
-       #(if (and (= key (first (keys %))) (= value (first (vals %))))
-          (merge {key value} (apply hash-map extra-vals))
-          %)
-       array-map))
+    (map
+     #(if (and (= key (first (keys %))) (= value (first (vals %))))
+        (merge {key value} (apply hash-map extra-vals))
+        %)
+     array-map)
     (concat array-map [(merge {key value} (apply hash-map extra-vals))])))
 
 (defn compress-training [all-training current-training]
