@@ -26,6 +26,20 @@
       date
       (recur (time/minus date (time/days 1))))))
 
+(defn find-in-array-map [array-map key]
+  (if (empty? array-map)
+    {}
+    (if (= key (first (keys (first array-map))))
+      (first array-map)
+      (recur (rest array-map) key))))
+
+(defn update-in-array-map [array-map key value]
+  (map
+   #(if (= key (first (keys %)))
+      {key value}
+      %)
+   array-map))
+
 (defn compress-training [all-training current-training]
   (let [current-date (:when current-training)
         current-workouts (:workouts current-training)
