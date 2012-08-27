@@ -9,14 +9,14 @@
     [:div.five.columns
      [:div.row
       [:div.five.columns.offset-by-one.workout-metric
-       (str (:miles workout) " miles")]     
+       (:type workout)]      
       [:div.five.columns.offset-by-one.workout-metric
-       (:type workout)]]
+       (str (:miles workout) " miles")]]
      [:div.row
       [:div.five.columns.offset-by-one.workout-metric
-       (:duration workout)]
+       (str (:pace workout) " min/mile")]      
       [:div.five.columns.offset-by-one.workout-metric
-       (str (:pace workout) " min/mile")]]]
+       (:duration workout)]]]
     [:div.seven.columns.workout-metric (:notes workout)]]])
 
 (defn mikes-log [training]
