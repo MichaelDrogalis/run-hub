@@ -59,8 +59,8 @@
        => [{:when (time/date-time 2012 1 1) :workouts [1 2]}]))
 
 (facts
- (fact (log/find-in-array-map [{:a 1} {:b 2}] :a) => {:a 1})
- (fact (log/find-in-array-map [{:a 1} {:b 2} {:c 3}] :c) => {:c 3})
+ (fact (log/find-in-array-map [{:a 1 :b 2} {:c 3 :d 4}] :a) => {:a 1 :b 2})
+ (fact (log/find-in-array-map [{:a 1 :b 2}] :b) => {:a 1 :b 2})
  (fact (log/find-in-array-map [] :a) => {}))
 
 (facts

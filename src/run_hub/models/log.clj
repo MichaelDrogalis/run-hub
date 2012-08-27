@@ -29,7 +29,7 @@
 (defn find-in-array-map [array-map key]
   (if (empty? array-map)
     {}
-    (if (= key (first (keys (first array-map))))
+    (if (some (into #{} (keys (first array-map))) [key])
       (first array-map)
       (recur (rest array-map) key))))
 
