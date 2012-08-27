@@ -36,10 +36,12 @@
 (defn update-in-array-map [array-map key value & extra-vals]
   (if (not (= (find-in-array-map array-map key value) {}))
     (map
-     #(if (and (= key (first (keys %))) (= value (first (vals %))))
-        (merge {key value} (apply hash-map extra-vals))
-        %)
-     array-map)
+     (fn [e]
+       (if (and (some (into #{} (keys e)) [key])
+                (some (into #{} (vals e)) [value]))
+         (merge e (apply hash-map extra-vals))
+         e))
+       array-map)
     (concat array-map [(merge {key value} (apply hash-map extra-vals))])))
 
 (defn compress-training [all-training current-training]
@@ -51,7 +53,7 @@
 
 (defn group-by-week [training]
   (let [ordered-training (order-training-by-date training)]
-    (reduce compress-training {} ordered-training)))
+    (reduce compress-training [] ordered-training)))
 
 (defn miles-per-week [training]
   (order-training-by-date  
