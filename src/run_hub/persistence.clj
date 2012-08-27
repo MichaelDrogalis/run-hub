@@ -25,7 +25,7 @@
    {:when (time/date-time 2012 8 22) :workouts [{:duration "1:33:55"
                                                  :miles 11.93
                                                  :type "CV Intervals"
-                                                 :notes "9 x 800m, 90s recovery: 3:04, 2:59, 2:59, 3:00, 2:58, 2:59, 2:57, 2:58, 3:00 | 8 x 30s fast, 60s recovery"}
+                                                 :notes "9 x 800m, 90s recovery: 3:04, 2:59, 2:59, 3:00, 2:58, 2:59, 2:57, 2:58, 3:00 ; 8 x 30s fast, 60s recovery"}
                                                 {:duration "25:00"
                                                  :miles 2.54
                                                  :type "Very Easy"
