@@ -34,19 +34,20 @@
       [:div.span12
        [:div#runner-info
         [:h1 "Log of Mike Drogalis"]]]]
-     [:div#training-log
-      (map
-       (fn [session]
-         [:div.row
-          [:div.two.columns
-           [:div.row.day-name
-            [:div.twelve.columns
-             [:h5 (log/day-name-for (:when session))]]]
-           [:div.row
-            [:div.twelve.columns.full-date
-             (log/format-date (:when session))]]]
-          (map workout-description (:workouts session))])
-       training)]]
+     [:div#training-log.row
+      [:div.twelve.columns
+       (map
+        (fn [session]
+          [:div.row
+           [:div.two.columns
+            [:div.row.day-name
+             [:div.twelve.columns
+              [:h5 (log/day-name-for (:when session))]]]
+            [:div.row
+             [:div.twelve.columns.full-date
+              (log/format-date (:when session))]]]
+           (map workout-description (:workouts session))])
+        training)]]]
     (include-js "http://code.jquery.com/jquery-latest.min.js")
     (include-js "/js/foundation.min.js")]))
 
