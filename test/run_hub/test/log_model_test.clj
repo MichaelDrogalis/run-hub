@@ -60,12 +60,13 @@
 
 (facts
  (fact (log/find-in-array-map [{:a 1 :b 2} {:c 3 :d 4}] :a 1) => {:a 1 :b 2})
+ (fact (log/find-in-array-map [{:a 1 :b 2} {:c 3 :d 4}] :a 5) => {})
  (fact (log/find-in-array-map [{:a 1 :b 2}] :b 2) => {:a 1 :b 2})
  (fact (log/find-in-array-map [] :a 1) => {}))
 
 (facts
- (fact (log/update-in-array-map [{:a 1}] :a 2 :b 3) => [{:a 2 :b 3}])
- (fact (log/update-in-array-map [{:a 1} {:b 2} {:c 3}] :c 4) => [{:a 1} {:b 2} {:c 4}]))
+ (fact (log/update-in-array-map [{:a 1}] :a 1 :b 3) => [{:a 1 :b 3}])
+ (fact (log/update-in-array-map [{:a 1} {:b 2} {:c 3}] :c 4 :d 5) => [{:a 1} {:b 2} {:c 3} {:c 4 :d 5}]))
 
 (future-fact
  "Workouts can be grouped by week"

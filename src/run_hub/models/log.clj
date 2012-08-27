@@ -29,26 +29,25 @@
 (defn find-in-array-map [array-map key value]
   (if (empty? array-map)
     {}
-    (if (filter (fn [[k v]] (and (= k key) (= v value))) (first array-map))
+    (if (not (empty? (filter (fn [[k v]] (and (= k key) (= v value))) (first array-map))))
       (first array-map)
       (recur (rest array-map) key value))))
-
+     
 (defn update-in-array-map [array-map key value & extra-vals]
   (if (not (= (find-in-array-map array-map key value) {}))
     (do
       (map
-       #(if (= key (first (keys %)))
+       #(if (and (= key (first (keys %))) (= value (first (vals %))))
           (merge {key value} (apply hash-map extra-vals))
           %)
        array-map))
-    (do
-      (concat array-map [(merge {key value} (apply hash-map extra-vals))]))))
+    (concat array-map [(merge {key value} (apply hash-map extra-vals))])))
 
 (defn compress-training [all-training current-training]
   (let [current-date (:when current-training)
         current-workouts (:workouts current-training)
         start-of-week (previous-sunday current-date)
-        workouts-this-week (find-in-array-map all-training :when start-of-week)]
+        workouts-this-week (:workouts (find-in-array-map all-training :when start-of-week))]
     (update-in-array-map all-training :when start-of-week :workouts (concat workouts-this-week current-workouts))))
 
 (defn group-by-week [training]
