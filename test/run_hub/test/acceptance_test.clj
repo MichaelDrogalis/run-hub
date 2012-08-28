@@ -5,13 +5,10 @@
             [run-hub.persistence :as persistence]
             [run-hub.handler :as handler]))
 
-(.stop handler/server)
-(.start handler/server)
-
 (set-driver! {:browser :firefox})
 
 (defn local [path]
-  (str "http://localhost:8080" path))
+  (str "http://localhost:3000" path))
 
 (fact "It finds the page of my log"
       (to (local "/MikeDrogalis/log"))
@@ -77,6 +74,4 @@
  => true)
 
 (quit)
-
-(.stop handler/server)
 

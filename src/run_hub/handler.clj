@@ -11,5 +11,5 @@
   (route/not-found "Not Found"))
 
 (def app (handler/site #'app-routes))
-(defonce server (run-jetty #'app {:port 8080 :join? false}))
+(def app-var #'app)
 

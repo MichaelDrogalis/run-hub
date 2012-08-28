@@ -1,6 +1,7 @@
 (ns run-hub.views.log
   (:require [hiccup.core :refer :all]
             [hiccup.page :refer :all]
+            [clojure.pprint :refer :all]
             [run-hub.models.log :as log]))
 
 (defn render-if [attribute markup]
@@ -26,6 +27,17 @@
       [:div.seven.columns.workout-metric (:notes workout)]]]
     [:div.two.columns]]])
 
+(defn day-of-training [day]
+  [:div.row
+   [:div.two.columns
+    [:div.row.day-name
+     [:div.twelve.columns
+      [:h5 (log/day-name-for (:when day))]]]
+    [:div.row
+     [:div.twelve.columns.full-date
+      (log/format-date (:when day))]]]
+   (workout-description day)])
+  
 (defn mikes-log [training]
   (html
    [:head
@@ -39,18 +51,7 @@
         [:h1 "Log of Mike Drogalis"]]]]
      [:div#training-log.row
       [:div.twelve.columns
-       (map
-        (fn [session]
-          [:div.row
-           [:div.two.columns
-            [:div.row.day-name
-             [:div.twelve.columns
-              [:h5 (log/day-name-for (:when session))]]]
-            [:div.row
-             [:div.twelve.columns.full-date
-              (log/format-date (:when session))]]]
-           (map workout-description (:workouts session))])
-        training)]]]
+       (map (fn [week] (map day-of-training week)) (map :workouts training))]]]
     (include-js "http://code.jquery.com/jquery-latest.min.js")
     (include-js "/js/foundation.min.js")]))
 
