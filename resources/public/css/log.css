@@ -11,7 +11,6 @@ body {
 }
 
 #training-log {
-    background-color: #e6e6e6;
 }
 
 .day-name {
@@ -23,7 +22,6 @@ body {
 }
 
 .workout-description {
-    background-color: #ddd;
     margin: 14px 0 14px 0;
     padding: 3px;
 }

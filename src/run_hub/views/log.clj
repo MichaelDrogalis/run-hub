@@ -10,7 +10,7 @@
 (defn workout-description [workout]
   [:div.ten.columns
    [:div.row
-    [:div.ten.columns.workout-description
+    [:div.ten.columns.workout-description.panel.radius
      [:div.row
       [:div.five.columns
        [:div.row
