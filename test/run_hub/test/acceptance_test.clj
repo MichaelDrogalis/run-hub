@@ -2,12 +2,16 @@
   (:require [midje.sweet :refer :all]
             [clj-time.core :as time]
             [clj-webdriver.taxi :refer :all]
-            [run-hub.persistence :as persistence]))
+            [run-hub.persistence :as persistence]
+            [run-hub.handler :as handler]))
+
+(.stop handler/server)
+(.start handler/server)
 
 (set-driver! {:browser :firefox})
 
 (defn local [path]
-  (str "http://localhost:3000" path))
+  (str "http://localhost:8080" path))
 
 (fact "It finds the page of my log"
       (to (local "/MikeDrogalis/log"))
@@ -67,11 +71,11 @@
 
 (fact
  "It has the first date of training as August 19, 2012"
- (to (local "/MikeDrogalis/log"))
- (.contains (text "#training-log") "August 19, 2012")
- => true
- (provided
-  (persistence/mikes-log) => (one-week-snippet)))
+ (with-redefs [persistence/mikes-log one-week-snippet]
+   (to (local "/MikeDrogalis/log"))
+   (.contains (text "#training-log") "August 19, 2012"))
+ => true)
 
 (quit)
+
 
