@@ -42,5 +42,5 @@
      (fn [[occurence workouts]]
        {:when occurence
         :days workouts})
-     (group-by (fn [day] (previous-sunday (:when day))) grouped-by-day))))
+     (group-by #(previous-sunday (:when %)) grouped-by-day))))
 
