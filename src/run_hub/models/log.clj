@@ -36,3 +36,11 @@
   (let [grouped-by-day (group-by-day training)]
     (group-by #(previous-sunday (first %)) grouped-by-day)))
 
+(defn weekly-mileage [training]
+  (let [grouped-by-week (group-by-week training)]
+    [(reduce
+      (fn [cumulative-training week]
+        {:when (first week)
+         :days (second week)
+         :miles (reduce (fn [a c] (+ a (:miles c))) 0 (second (first (second week))))})
+      [] grouped-by-week)]))
