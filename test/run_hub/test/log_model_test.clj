@@ -40,31 +40,51 @@
   (log/group-by-day []) => [])
 
  (fact
-  (specified-by [a workout
-        b (is-like a)]
-    (log/group-by-day all)
-    => [{:when (:when a) :workouts [a b]}]))
+  (specified-by
+   [a workout
+    b (is-like a)]
+   (log/group-by-day all)
+   => [{:when (:when a) :workouts [a b]}]))
 
  (fact
-  (specified-by [a workout
-        b (is-like a (but-it (has-a-later :when)))]
-    (log/group-by-day all)
-    => [{:when (:when a) :workouts [a]}
-        {:when (:when b) :workouts [b]}]))
+  (specified-by
+   [a workout
+    b (is-like a (but-it (has-a-later :when)))]
+   (log/group-by-day all)
+   => [{:when (:when a) :workouts [a]}
+       {:when (:when b) :workouts [b]}]))
 
  (fact
-  (specified-by [a workout
-        b (is-like a)
-        c (is-like b (but-it (has-a-later :when)))
-        d (is-like c)
-        e (is-like d (but-it (has-a-later :when)))]
-    (log/group-by-day all)
-    => [{:when (:when a) :workouts [a b]}
-        {:when (:when c) :workouts [c d]}
-        {:when (:when e) :workouts [e]}])))
+  (specified-by
+   [a workout
+    b (is-like a)
+    c (is-like b (but-it (has-a-later :when)))
+    d (is-like c)
+    e (is-like d (but-it (has-a-later :when)))]
+   (log/group-by-day all)
+   => [{:when (:when a) :workouts [a b]}
+       {:when (:when c) :workouts [c d]}
+       {:when (:when e) :workouts [e]}])))
 
-       
-       
+(fact
+ (log/group-by-week []) => [])
+
+(fact
+ (specified-by
+  [a workout
+   b (is-like a)]
+  (log/group-by-week all)
+  => [{:when (:when a) :days [{:when (:when a) :workouts [a b]}]}]))
+
+(fact
+ (specified-by
+  [a (assoc workout :when (time/date-time 2012 1 1))
+   b (is-like a (but-it (has-one-day-later :when)))
+   c (is-like a (but-it (has-one-week-later :when)))]
+  (log/group-by-week all)
+  => [{:when (:when a) :days [{:when (:when a) :workouts [a]}
+                              {:when (:when b) :workouts [b]}]}
+      {:when (:when c) :days [{:when (:when c) :workouts [c]}]}]))
 
 (comment
   (fact
@@ -90,12 +110,12 @@
    (fact (log/compress-training []
                                 {:when (time/date-time 2012 1 1) :workouts []})
          => [{:when (time/date-time 2012 1 1) :workouts []}])
- 
+   
    (fact (log/compress-training [{:when (time/date-time 2012 1 1) :workouts [{:when (time/date-time 2012 1 1)}]}]
                                 {:when (time/date-time 2012 1 20) :workouts [{}]})
          => [{:when (time/date-time 2012 1 1) :workouts [{:when (time/date-time 2012 1 1)}]}
              {:when (time/date-time 2012 1 15) :workouts [{:when (time/date-time 2012 1 20)}]}])
- 
+   
    (fact (log/compress-training [{:when (time/date-time 2012 1 1) :workouts [{:when (time/date-time 2012 1 1)}]}]
                                 {:when (time/date-time 2012 1 2) :workouts [{:when (time/date-time 2012 1 1)}]})
          => [{:when (time/date-time 2012 1 1) :workouts [{:when (time/date-time 2012 1 1)}
@@ -144,7 +164,7 @@
       => [{:when (time/date-time 2011 1 2) :miles 50 :days [{:when (time/date-time 2011 1 2) :workouts [{:miles 50}]}]}
           {:when (time/date-time 2012 1 1) :miles 30 :days [{:when (time/date-time 2012 1 1) :workouts [{:miles 10}]}
                                                             {:when (time/date-time 2012 1 2) :workouts [{:miles 20}]}]}])))
-         
+  
   (fact
    "Some of my raw workout data gets it's mpw calculated"
    (let [training [{:when (time/date-time 2012 8 19) :workouts [{:duration "44:12"
@@ -197,4 +217,4 @@
                                                                  :pace "9:10"
                                                                  :notes "Valley Forge trails"}]}]]
      (:miles (first (log/miles-per-week (log/group-by-week training)))) => 67.09)))
-       
+

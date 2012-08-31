@@ -36,40 +36,11 @@
       :workouts workouts})
    (group-by :when training)))
 
-(defn find-in-array-map [array-map key value]
-  (if (empty? array-map)
-    {}
-    (if (not (empty? (filter (fn [[k v]] (and (= k key) (= v value))) (first array-map))))
-      (first array-map)
-      (recur (rest array-map) key value))))
-     
-(defn update-in-array-map [array-map key value & extra-vals]
-  (if (not (= (find-in-array-map array-map key value) {}))
-    (map
-     #(if (and (some (into #{} (keys %)) [key])
-               (some (into #{} (vals %)) [value]))
-        (merge % (apply hash-map extra-vals))
-        %)
-    array-map)
-  (concat array-map [(merge {key value} (apply hash-map extra-vals))])))
-
-(defn compress-training [all-training current-training]
-  (let [current-date (:when current-training)
-        current-workouts (map #(assoc % :when current-date) (:workouts current-training))
-        start-of-week (previous-sunday current-date)
-        workouts-this-week (:workouts (find-in-array-map all-training :when start-of-week))]
-    (update-in-array-map all-training :when start-of-week :workouts (concat workouts-this-week current-workouts))))
-
 (defn group-by-week [training]
-  (let [ordered-training (order-training-by-date training)]
-    (reduce compress-training [] ordered-training)))
-
-(defn miles-per-week [training]
-  (order-training-by-date  
-   (map
-    (fn [session]
-      {:when (:when session)
-       :miles (apply + (map :miles (:workouts session)))
-       :days []})
-    training)))
+  (let [grouped-by-day (group-by-day training)]
+    (map
+     (fn [[occurence workouts]]
+       {:when occurence
+        :days workouts})
+     (group-by (fn [day] (previous-sunday (:when day))) grouped-by-day))))
 
