@@ -40,25 +40,25 @@
   (log/group-by-day []) => [])
 
  (fact
-  (let [a workout
+  (specified-by [a workout
         b (is-like a)]
-    (log/group-by-day [a b])
+    (log/group-by-day all)
     => [{:when (:when a) :workouts [a b]}]))
 
  (fact
-  (let [a workout
+  (specified-by [a workout
         b (is-like a (but-it (has-a-later :when)))]
-    (log/group-by-day [a b])
+    (log/group-by-day all)
     => [{:when (:when a) :workouts [a]}
         {:when (:when b) :workouts [b]}]))
 
  (fact
-  (let [a workout
+  (specified-by [a workout
         b (is-like a)
         c (is-like b (but-it (has-a-later :when)))
         d (is-like c)
         e (is-like d (but-it (has-a-later :when)))]
-    (log/group-by-day [a b c d e])
+    (log/group-by-day all)
     => [{:when (:when a) :workouts [a b]}
         {:when (:when c) :workouts [c d]}
         {:when (:when e) :workouts [e]}])))
