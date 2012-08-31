@@ -37,22 +37,22 @@
 (facts
  "Workouts can be grouped by day"
  (fact
-  (log/group-by-day []) => [])
+  (log/group-by-day []) => {})
 
  (fact
   (specified-by
    [a workout
     b (is-like a)]
    (log/group-by-day all)
-   => [{:when (:when a) :workouts [a b]}]))
+   => {(:when a) [a b]}))
 
  (fact
   (specified-by
    [a workout
     b (is-like a (but-it (has-a-later :when)))]
    (log/group-by-day all)
-   => [{:when (:when a) :workouts [a]}
-       {:when (:when b) :workouts [b]}]))
+   => {(:when a) [a]
+       (:when b) [b]}))
 
  (fact
   (specified-by
@@ -62,19 +62,19 @@
     d (is-like c)
     e (is-like d (but-it (has-a-later :when)))]
    (log/group-by-day all)
-   => [{:when (:when a) :workouts [a b]}
-       {:when (:when c) :workouts [c d]}
-       {:when (:when e) :workouts [e]}])))
+   => {(:when a) [a b]
+       (:when c) [c d]
+       (:when e) [e]})))
 
 (fact
- (log/group-by-week []) => [])
+ (log/group-by-week []) => {})
 
 (fact
  (specified-by
   [a workout
    b (is-like a)]
   (log/group-by-week all)
-  => [{:when (:when a) :days [{:when (:when a) :workouts [a b]}]}]))
+  => {(:when a) [[(:when a) [a b]]]}))
 
 (fact
  (specified-by
@@ -82,9 +82,9 @@
    b (is-like a (but-it (has-one-day-later :when)))
    c (is-like a (but-it (has-one-week-later :when)))]
   (log/group-by-week all)
-  => [{:when (:when a) :days [{:when (:when a) :workouts [a]}
-                              {:when (:when b) :workouts [b]}]}
-      {:when (:when c) :days [{:when (:when c) :workouts [c]}]}]))
+  => {(:when a) [[(:when a) [a]]
+                 [(:when b) [b]]]
+      (:when c) [[(:when c) [c]]]}))
 
 (comment
   (fact

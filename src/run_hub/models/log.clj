@@ -30,17 +30,9 @@
       (recur (time/minus date (time/days 1))))))
 
 (defn group-by-day [training]
-  (map
-   (fn [[occurence workouts]]
-     {:when occurence
-      :workouts workouts})
-   (group-by :when training)))
+  (group-by :when training))
 
 (defn group-by-week [training]
   (let [grouped-by-day (group-by-day training)]
-    (map
-     (fn [[occurence workouts]]
-       {:when occurence
-        :days workouts})
-     (group-by #(previous-sunday (:when %)) grouped-by-day))))
+    (group-by #(previous-sunday (first %)) grouped-by-day)))
 
