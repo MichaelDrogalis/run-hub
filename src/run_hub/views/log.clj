@@ -27,18 +27,28 @@
       [:div.seven.columns.workout-metric (:notes workout)]]]
     [:div.two.columns]]])
 
-(defn day-of-training [day]
+(defn describe-day [day]
   [:div.row
-   [:div.two.columns
-    [:div.row.day-name
-     [:div.twelve.columns
-      [:h5 (log/day-name-for (:when day))]]]
-    [:div.row
-     [:div.twelve.columns.full-date
-      (log/format-date (:when day))]]]
-   (workout-description day)])
-  
+  [:div.two.columns
+   [:div.row.day-name
+    [:div.twelve.columns
+     [:h5 (log/day-name-for (:when day))]]]
+   [:div.row
+    [:div.twelve.columns.full-date
+     (log/format-date (:when day))]]]
+  (map workout-description (:workouts day))])
+
+;;; Iterate over each week
+;;; 
+
+(defn describe-week [week]
+  [:div.row
+   (map describe-day (:workouts week))])
+
 (defn mikes-log [training]
+  (println "########")  
+  (pprint training)
+  (println "########")
   (html
    [:head
     (include-css "/css/foundation.css")
@@ -51,7 +61,7 @@
         [:h1 "Log of Mike Drogalis"]]]]
      [:div#training-log.row
       [:div.twelve.columns
-       (map (fn [week] (map day-of-training week)) (map :workouts training))]]]
+       (map describe-week training)]]]
     (include-js "http://code.jquery.com/jquery-latest.min.js")
     (include-js "/js/foundation.min.js")]))
 

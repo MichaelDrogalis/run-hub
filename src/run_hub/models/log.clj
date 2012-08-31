@@ -29,6 +29,13 @@
       date
       (recur (time/minus date (time/days 1))))))
 
+(defn group-by-day [training]
+  (map
+   (fn [[occurence workouts]]
+     {:when occurence
+      :workouts workouts})
+   (group-by :when training)))
+
 (defn find-in-array-map [array-map key value]
   (if (empty? array-map)
     {}
@@ -48,7 +55,7 @@
 
 (defn compress-training [all-training current-training]
   (let [current-date (:when current-training)
-        current-workouts (:workouts current-training)
+        current-workouts (map #(assoc % :when current-date) (:workouts current-training))
         start-of-week (previous-sunday current-date)
         workouts-this-week (:workouts (find-in-array-map all-training :when start-of-week))]
     (update-in-array-map all-training :when start-of-week :workouts (concat workouts-this-week current-workouts))))
@@ -63,6 +70,6 @@
     (fn [session]
       {:when (:when session)
        :miles (apply + (map :miles (:workouts session)))
-       :workouts (:workouts session)})
+       :days []})
     training)))
 
