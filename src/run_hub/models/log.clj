@@ -43,5 +43,5 @@
        (conj cumulative-training
              {:when (first week)
               :days (second week)
-              :miles (apply + (flatten (map (fn [day] (map :miles day))(map second (second week)))))}))
+              :miles (apply + (flatten (map (fn [day] (map :miles day)) (map second (second week)))))}))
      [] grouped-by-week)))
