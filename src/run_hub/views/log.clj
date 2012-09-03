@@ -8,7 +8,7 @@
   (if attribute
     markup))
 
-(defn workout-description [workout]
+(defn describe-workout [workout]
   [:div.ten.columns
    [:div.row
     [:div.ten.columns.workout-description.panel.radius
@@ -32,27 +32,21 @@
   [:div.two.columns
    [:div.row.day-name
     [:div.twelve.columns
-     [:h5 (log/day-name-for (:when day))]]]
+     [:h5 (log/day-name-for (first day))]]]
    [:div.row
     [:div.twelve.columns.full-date
-     (log/format-date (:when day))]]]
-  (map workout-description (:workouts day))])
-
-;;; Iterate over each week
-;;; 
+     (log/format-date (first day))]]]
+  (map describe-workout (second day))])
 
 (defn describe-week [week]
-  [:div.row
-   (map describe-day (:workouts week))])
+  (map describe-day (:days week)))
 
 (defn mikes-log [training]
-  (println "########")  
-  (pprint training)
-  (println "########")
   (html
    [:head
     (include-css "/css/foundation.css")
-    (include-css "/css/log.css")]
+    (include-css "/css/log.css")
+    [:title "RunHub: Social training for distance runners"]]
    [:body
     [:div.container
      [:div.row
