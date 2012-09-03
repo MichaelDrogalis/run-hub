@@ -29,17 +29,23 @@
 
 (defn describe-day [day]
   [:div.row
-  [:div.two.columns
-   [:div.row.day-name
-    [:div.twelve.columns
-     [:h5 (log/day-name-for (first day))]]]
-   [:div.row
-    [:div.twelve.columns.full-date
-     (log/format-date (first day))]]]
-  (map describe-workout (second day))])
+   [:div.two.columns
+    [:div.row.day-name
+     [:div.twelve.columns
+      [:h5 (log/day-name-for (first day))]]]
+    [:div.row
+     [:div.twelve.columns.full-date
+      (log/format-date (first day))]]]
+   (map describe-workout (second day))])
 
 (defn describe-week [week]
-  (map describe-day (:days week)))
+  [:div.row
+   [:div.twelve.columns
+    [:div.row
+     [:div.two.columns.mpw
+      [:div.label (str (:miles week) " miles")]]
+     [:div.ten.columns]]
+    (map describe-day (:days week))]])
 
 (defn mikes-log [training]
   (html

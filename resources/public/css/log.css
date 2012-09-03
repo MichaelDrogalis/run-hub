@@ -13,6 +13,11 @@ body {
 #training-log {
 }
 
+.mpw {
+    margin-top: 50px;
+    text-align: center
+}
+
 .day-name {
     text-align: center;
 }
