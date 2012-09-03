@@ -101,3 +101,22 @@
       :miles (:miles workout)
       :days [[(:when workout) [workout]]]}])
 
+(fact
+ (specified-by
+  [a workout
+   b (is-like a)]
+  (log/weekly-mileage all)
+  => [{:when (:when a)
+       :miles (+ (:miles a) (:miles b))
+       :days [[(:when a) [a b]]]}]))
+
+(fact
+ (specified-by
+  [a workout
+   b (is-like a (but-it (has-one-day-later :when)))]
+  (log/weekly-mileage all)
+  => [{:when (:when a)
+       :miles (+ (:miles a) (:miles b))
+       :days [[(:when a) [a]]
+              [(:when b) [b]]]}]))
+
