@@ -35,3 +35,6 @@ body {
     margin: 3px 0 3px 0;
 }
 
+.training-day {
+    min-height: 76px;
+}

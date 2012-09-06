@@ -48,5 +48,5 @@
           (training-dates start-of-week (time/plus start-of-week (time/days 6))))))
 
 (defn complete-week [start-of-week workouts]
-  (merge (empty-workouts-for-week start-of-week) workouts))
+  (sort-by first (merge (empty-workouts-for-week start-of-week) (group-by-day workouts))))
 

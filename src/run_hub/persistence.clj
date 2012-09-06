@@ -18,16 +18,6 @@
     :miles 3.65
     :type "Very Easy"
     :pace "9:35"}
-   {:when(time/date-time 2012 8 21)
-    :duration "1:01:45"
-    :miles 6.74
-    :type "Easy"
-    :pace "9:09"}
-   {:when (time/date-time 2012 8 21)
-    :duration "25:00"
-    :miles 2.63
-    :type "Very Easy"
-    :pace "9:30"}
    {:when(time/date-time 2012 8 22)
     :duration "1:33:55"
     :miles 11.93

@@ -30,7 +30,7 @@
 (defn describe-day [day]
   (let [date (first day)
         workouts (second day)]
-    [:div.row
+    [:div.row.training-day
      [:div.two.columns
       [:div.row.day-name
        [:div.twelve.columns
@@ -41,14 +41,15 @@
      (map describe-workout workouts)]))
 
 (defn describe-week [week]
-  (let [workouts (second week)]
+  (let [workouts (second week)
+        complete-week (log/complete-week (first week) (second week))]
     [:div.row
      [:div.twelve.columns
       [:div.row
        [:div.two.columns.mpw
         [:div.label (str (log/total-miles workouts) " miles")]]
        [:div.ten.columns]]
-      (map describe-day (log/group-by-day workouts))]]))
+      (map describe-day complete-week)]]))
 
 (defn mikes-log [training]
   (html

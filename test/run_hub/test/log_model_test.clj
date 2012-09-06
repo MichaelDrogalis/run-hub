@@ -105,11 +105,11 @@
    e (time/plus d (time/days 1))
    f (time/plus e (time/days 1))
    g (time/plus f (time/days 1))]
-  (log/complete-week (:when a) (log/group-by-day [a]))
-  => {(:when a) [a]
-      b []
-      c []
-      d []
-      e []
-      f []
-      g []}))
+  (log/complete-week (:when a) [a])
+  => [[(:when a) [a]]
+      [b []]
+      [c []]
+      [d []]
+      [e []]
+      [f []]
+      [g []]]))
