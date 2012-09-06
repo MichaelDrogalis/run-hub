@@ -5,15 +5,6 @@
             [run-hub.models.log :as log]))
 
 (fact
- "Mike's log yields dates from January 1, 2012 onward"
- (take 5 (log/training-dates))
- => [(time/date-time 2012 1 1)
-     (time/date-time 2012 1 2)
-     (time/date-time 2012 1 3)
-     (time/date-time 2012 1 4)
-     (time/date-time 2012 1 5)])
-
-(fact
  "Date's are formatted like so"
  (log/format-date (time/date-time 2012 1 1))
  => "January 1, 2012")
@@ -42,6 +33,36 @@
        => (time/date-time 2012 1 1)))
 
 (def workout {:when (time/date-time 2012 1 1) :miles 7})
+
+(fact
+ (log/group-by-week []) => {})
+
+(fact
+ (let [a workout]
+   (log/group-by-week [a]) => {(:when a) [a]}))
+
+(fact
+ (let [a workout
+       b a]
+   (log/group-by-week [a b]) => {(:when a) [a b]}))
+
+(fact
+ (let [a workout
+       b (is-like a (but-it (has-one-week-later :when)))]
+   (log/group-by-week [a b]) => {(:when a) [a]
+                                 (:when b) [b]}))
+
+(fact
+ (log/total-miles []) => 0)
+
+(fact
+ (let [a workout]
+   (log/total-miles [a]) => (:miles a)))
+
+(fact
+ (let [a workout
+       b a]
+   (log/total-miles [a b]) => (+ (:miles a) (:miles b))))
 
 (facts
  "Workouts can be grouped by day"
@@ -74,49 +95,4 @@
    => {(:when a) [a b]
        (:when c) [c d]
        (:when e) [e]})))
-
-(fact
- (log/group-by-week []) => {})
-
-(fact
- (specified-by
-  [a workout
-   b (is-like a)]
-  (log/group-by-week all)
-  => {(:when a) [[(:when a) [a b]]]}))
-
-(fact
- (specified-by
-  [a (assoc workout :when (time/date-time 2012 1 1))
-   b (is-like a (but-it (has-one-day-later :when)))
-   c (is-like a (but-it (has-one-week-later :when)))]
-  (log/group-by-week all)
-  => {(:when a) [[(:when a) [a]]
-                 [(:when b) [b]]]
-      (:when c) [[(:when c) [c]]]}))
-
-(fact
- (log/weekly-mileage [workout])
- => [{:when (:when workout)
-      :miles (:miles workout)
-      :days [[(:when workout) [workout]]]}])
-
-(fact
- (specified-by
-  [a workout
-   b (is-like a)]
-  (log/weekly-mileage all)
-  => [{:when (:when a)
-       :miles (+ (:miles a) (:miles b))
-       :days [[(:when a) [a b]]]}]))
-
-(fact
- (specified-by
-  [a workout
-   b (is-like a (but-it (has-one-day-later :when)))]
-  (log/weekly-mileage all)
-  => [{:when (:when a)
-       :miles (+ (:miles a) (:miles b))
-       :days [[(:when a) [a]]
-              [(:when b) [b]]]}]))
 

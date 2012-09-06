@@ -3,11 +3,13 @@
             [clj-time.format :as format]))
 
 (defn training-dates
-  ([] (training-dates (time/date-time 2012 1 1) (time/now) []))
+  ([start end] (training-dates start end []))
   ([start end interval]
    (if (time/after? start end)
      interval
-     (recur (time/plus start (time/days 1)) end (concat interval [start])))))
+     (recur (time/plus start (time/days 1))
+            end
+            (concat interval [start])))))
 
 (defn format-date [date]
   (let [format (format/formatter "MMMM d, YYYY")]
@@ -32,16 +34,9 @@
 (defn group-by-day [training]
   (group-by :when training))
 
-(defn group-by-week [training]
-  (let [grouped-by-day (group-by-day training)]
-    (group-by #(previous-sunday (first %)) grouped-by-day)))
+(defn group-by-week [workouts]
+  (group-by #(previous-sunday (:when %)) workouts))
 
-(defn weekly-mileage [training]
-  (let [grouped-by-week (group-by-week training)]
-    (reduce
-     (fn [cumulative-training week]
-       (conj cumulative-training
-             {:when (first week)
-              :days (second week)
-              :miles (apply + (flatten (map (fn [day] (map :miles day)) (map second (second week)))))}))
-     [] grouped-by-week)))
+(defn total-miles [workouts]
+  (apply + (map :miles workouts)))
+

@@ -28,24 +28,27 @@
     [:div.two.columns]]])
 
 (defn describe-day [day]
-  [:div.row
-   [:div.two.columns
-    [:div.row.day-name
-     [:div.twelve.columns
-      [:h5 (log/day-name-for (first day))]]]
+  (let [date (first day)
+        workouts (second day)]
     [:div.row
-     [:div.twelve.columns.full-date
-      (log/format-date (first day))]]]
-   (map describe-workout (second day))])
+     [:div.two.columns
+      [:div.row.day-name
+       [:div.twelve.columns
+        [:h5 (log/day-name-for date)]]]
+      [:div.row
+       [:div.twelve.columns.full-date
+        (log/format-date date)]]]
+     (map describe-workout workouts)]))
 
 (defn describe-week [week]
-  [:div.row
-   [:div.twelve.columns
+  (let [workouts (second week)]
     [:div.row
-     [:div.two.columns.mpw
-      [:div.label (str (:miles week) " miles")]]
-     [:div.ten.columns]]
-    (map describe-day (:days week))]])
+     [:div.twelve.columns
+      [:div.row
+       [:div.two.columns.mpw
+        [:div.label (str (log/total-miles workouts) " miles")]]
+       [:div.ten.columns]]
+      (map describe-day (log/group-by-day workouts))]]))
 
 (defn mikes-log [training]
   (html
