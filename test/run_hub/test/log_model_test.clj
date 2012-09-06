@@ -34,36 +34,6 @@
 
 (def workout {:when (time/date-time 2012 1 1) :miles 7})
 
-(fact
- (log/group-by-week []) => {})
-
-(fact
- (let [a workout]
-   (log/group-by-week [a]) => {(:when a) [a]}))
-
-(fact
- (let [a workout
-       b a]
-   (log/group-by-week [a b]) => {(:when a) [a b]}))
-
-(fact
- (let [a workout
-       b (is-like a (but-it (has-one-week-later :when)))]
-   (log/group-by-week [a b]) => {(:when a) [a]
-                                 (:when b) [b]}))
-
-(fact
- (log/total-miles []) => 0)
-
-(fact
- (let [a workout]
-   (log/total-miles [a]) => (:miles a)))
-
-(fact
- (let [a workout
-       b a]
-   (log/total-miles [a b]) => (+ (:miles a) (:miles b))))
-
 (facts
  "Workouts can be grouped by day"
  (fact
@@ -96,3 +66,50 @@
        (:when c) [c d]
        (:when e) [e]})))
 
+(fact
+ (log/group-by-week []) => {})
+
+(fact
+ (let [a workout]
+   (log/group-by-week [a]) => {(:when a) [a]}))
+
+(fact
+ (let [a workout
+       b a]
+   (log/group-by-week [a b]) => {(:when a) [a b]}))
+
+(fact
+ (let [a workout
+       b (is-like a (but-it (has-one-week-later :when)))]
+   (log/group-by-week [a b]) => {(:when a) [a]
+                                 (:when b) [b]}))
+
+(fact
+ (log/total-miles []) => 0)
+
+(fact
+ (let [a workout]
+   (log/total-miles [a]) => (:miles a)))
+
+(fact
+ (let [a workout
+       b a]
+   (log/total-miles [a b]) => (+ (:miles a) (:miles b))))
+
+(fact
+ (specified-by
+  [a workout
+   b (time/plus (:when a) (time/days 1))
+   c (time/plus b (time/days 1))
+   d (time/plus c (time/days 1))
+   e (time/plus d (time/days 1))
+   f (time/plus e (time/days 1))
+   g (time/plus f (time/days 1))]
+  (log/complete-week (:when a) (log/group-by-day [a]))
+  => {(:when a) [a]
+      b []
+      c []
+      d []
+      e []
+      f []
+      g []}))
