@@ -32,6 +32,13 @@
  (fact (log/previous-sunday (time/date-time 2012 1 1))
        => (time/date-time 2012 1 1)))
 
+(facts
+ (fact (log/formatted-mpw 0) => "0.00")
+ (fact (log/formatted-mpw 10) => "10.00")
+ (fact (log/formatted-mpw 10.1) => "10.10")
+ (fact (log/formatted-mpw 10.25) => "10.25")
+ (fact (log/formatted-mpw 10.33333) => "10.33"))
+
 (def workout {:when (time/date-time 2012 1 1) :miles 7})
 
 (facts

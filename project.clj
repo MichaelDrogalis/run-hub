@@ -8,7 +8,8 @@
                  [midje "1.4.0"]
                  [clj-time "0.4.3"]
                  [com.stuartsierra/lazytest "1.2.3"]
-                 [zombie "0.1.1-SNAPSHOT"]]
+                 [zombie "0.1.1-SNAPSHOT"]
+                 [cheshire "4.0.2"]]
   :plugins [[lein-ring "0.7.3"]]
   :ring {:handler run-hub.handler/app-var}
   :repositories {"stuart" "http://stuartsierra.com/maven2"}  

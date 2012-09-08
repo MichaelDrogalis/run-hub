@@ -15,13 +15,11 @@
      [:div.row
       [:div.five.columns
        [:div.row
-        [:div.five.columns.offset-by-one.workout-metric
-         (:type workout)]      
-        [:div.five.columns.offset-by-one.workout-metric
-         (render-if (:miles workout) (str (:miles workout) " miles"))]]
+        [:div.eleven.columns.offset-by-one.workout-metric
+         (:type workout)]]
        [:div.row
         [:div.five.columns.offset-by-one.workout-metric
-         (render-if (:pace workout) (str (:pace workout) " min/mile"))]
+         (render-if (:miles workout) (str (:miles workout) " miles"))]
         [:div.five.columns.offset-by-one.workout-metric
          (:duration workout)]]]
       [:div.seven.columns.workout-metric (:notes workout)]]]
@@ -47,7 +45,7 @@
      [:div.twelve.columns
       [:div.row
        [:div.two.columns.mpw
-        [:div.label (str (log/total-miles workouts) " miles")]]
+        [:div.label (str (log/formatted-mpw (log/total-miles workouts)) " miles")]]
        [:div.ten.columns]]
       (map describe-day complete-week)]]))
 

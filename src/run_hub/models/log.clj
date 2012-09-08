@@ -11,6 +11,9 @@
             end
             (concat interval [start])))))
 
+(defn formatted-mpw [mileage]
+  (format "%.2f" (double mileage)))
+
 (defn format-date [date]
   (let [format (format/formatter "MMMM d, YYYY")]
     (format/unparse format date)))
@@ -35,7 +38,7 @@
   (group-by :when training))
 
 (defn group-by-week [workouts]
-  (group-by #(previous-sunday (:when %)) workouts))
+  (into (sorted-map) (group-by #(previous-sunday (:when %)) workouts)))
 
 (defn total-miles [workouts]
   (apply + (map :miles workouts)))
