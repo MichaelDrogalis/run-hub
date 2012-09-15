@@ -1,6 +1,7 @@
 (defproject run-hub "0.1.0-SNAPSHOT"
   :description "Social training for distance runners"
   :ring {:handler run-hub.handler/app-var}
+  :min-lein-version "2.0.0"
   :repositories {"stuart" "http://stuartsierra.com/maven2"}  
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [compojure "1.1.1"]
