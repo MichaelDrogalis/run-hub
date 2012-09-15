@@ -49,21 +49,39 @@
        [:div.ten.columns]]
       (map describe-day complete-week)]]))
 
-(defn mikes-log [training]
+(defn with-common-theme [& mark-up]
   (html
    [:head
     (include-css "/css/foundation.css")
     (include-css "/css/log.css")
     [:title "RunHub: Social training for distance runners"]]
    [:body
-    [:div.container
-     [:div.row
-      [:div.span12
-       [:div#runner-info
-        [:h1 "Log of Mike Drogalis"]]]]
-     [:div#training-log.row
-      [:div.twelve.columns
-       (map describe-week training)]]]
+    [:div.container mark-up]
     (include-js "http://code.jquery.com/jquery-latest.min.js")
-    (include-js "/js/foundation.min.js")]))
+    (include-js "/js/foundation.min.js")
+    (include-js "/js/highcharts/highcharts.js")
+    (include-js "/js/highcharts/modules/exporting.js")
+    (include-js "/js/app.js")
+    (include-js "/js/cljs-compiled.js")]))
+  
 
+(defn mikes-log [training]
+  (with-common-theme
+    [:div.row
+     [:div.span12
+      [:div#runner-info
+       [:h1 "Log of Mike Drogalis"]]]]
+    [:div#training-log.row
+     [:div.twelve.columns
+      (map describe-week training)]]))
+
+(defn mikes-mpw []
+  (with-common-theme
+    [:div.row
+     [:div.span12
+      [:div#runner-info
+       [:h1 "MPW of Mike Drogalis"]]]]
+    [:div.row
+     [:div.twelve.columns
+      [:div#mpw-graph]]]))
+    

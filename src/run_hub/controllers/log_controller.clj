@@ -7,3 +7,6 @@
   (let [weeks-of-training (log/group-by-week (persistence/mikes-log))]
     (views/mikes-log weeks-of-training)))
 
+(defn mikes-mpw []
+  (views/mikes-mpw))
+
