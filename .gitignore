@@ -10,4 +10,6 @@ pom.xml
 .lein-plugins
 .lein-env
 *~
+\#*\#
+.#*
 

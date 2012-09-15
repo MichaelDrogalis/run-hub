@@ -1,3 +1,40 @@
+/* App */
+
+body {
+    background-color: #eee;
+}
+
+/* End app */
+
 #runner-info {
     text-align: center;
+}
+
+#training-log {
+}
+
+.mpw {
+    margin-top: 50px;
+    text-align: center
+}
+
+.day-name {
+    text-align: center;
+}
+
+.full-date {
+    text-align: center;
+}
+
+.workout-description {
+    margin: 14px 0 14px 0;
+    padding: 3px;
+}
+
+.workout-metric {
+    margin: 3px 0 3px 0;
+}
+
+.training-day {
+    min-height: 76px;
 }
