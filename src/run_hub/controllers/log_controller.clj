@@ -10,3 +10,9 @@
 (defn mikes-mpw []
   (views/mikes-mpw))
 
+(defn mikes-log-for-week [when]
+  (let [all-training (persistence/mikes-log)
+        start-of-week (log/previous-sunday (log/parse-dashed-date when))
+        relevant-training (log/group-by-week (log/workouts-for-week all-training start-of-week))]
+    (views/mikes-log relevant-training)))
+

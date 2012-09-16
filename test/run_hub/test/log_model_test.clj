@@ -120,3 +120,11 @@
       [e []]
       [f []]
       [g []]]))
+
+(fact
+ (specified-by
+  [a workout
+   b (is-like a (but-it (has-one-week-later :when)))]
+  (log/workouts-for-week all (:when a))
+  => [a]))
+

@@ -10,7 +10,18 @@ body {
     text-align: center;
 }
 
-#training-log {
+#week-changer {
+    text-align: center;
+}
+
+#previous-week {
+    font-size: 400%;
+    padding: 0 125px 0 125px;
+}
+
+#next-week {
+    font-size: 400%;
+    padding: 0 125px 0 125px;
 }
 
 .mpw {

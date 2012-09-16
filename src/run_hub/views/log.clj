@@ -54,6 +54,8 @@
    [:head
     (include-css "/css/foundation.css")
     (include-css "/css/log.css")
+    (include-css "/css/general_foundicons.css")
+    (include-css "/css/general_foundicons_ie7.css")
     [:title "RunHub: Social training for distance runners"]]
    [:body
     [:div.container mark-up]
@@ -64,13 +66,15 @@
     (include-js "/js/app.js")
     (include-js "/js/cljs-compiled.js")]))
   
-
 (defn mikes-log [training]
   (with-common-theme
     [:div.row
-     [:div.span12
+     [:div.twelve.columns
       [:div#runner-info
-       [:h1 "Log of Mike Drogalis"]]]]
+       [:h1 "Log of Mike Drogalis"]]
+      [:div#week-changer
+       [:i#previous-week.general.foundicon-left-arrow]
+       [:i#next-week.general.foundicon-right-arrow]]]]
     [:div#training-log.row
      [:div.twelve.columns
       (map describe-week training)]]))
@@ -78,7 +82,7 @@
 (defn mikes-mpw []
   (with-common-theme
     [:div.row
-     [:div.span12
+     [:div.twelve.columns
       [:div#runner-info
        [:h1 "MPW of Mike Drogalis"]]]]
     [:div.row
