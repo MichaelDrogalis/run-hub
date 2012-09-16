@@ -7,6 +7,7 @@
 
 (defroutes app-routes
   (GET "/MikeDrogalis/log" [] (log-controller/mikes-log))
+  (GET "/MikeDrogalis/log/:when" [when] (log-controller/mikes-log-for-week when))
   (GET "/MikeDrogalis/mpw" [] (log-controller/mikes-mpw))
   (route/resources "/")
   (route/not-found "Not Found"))

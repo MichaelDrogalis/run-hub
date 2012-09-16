@@ -22,6 +22,10 @@
   (let [format (format/formatter "MM/dd/yyyy")]
     (format/parse format date)))
 
+(defn parse-dashed-date [date]
+  (let [format (format/formatter "MM-dd-yyyy")]
+    (format/parse format date)))
+
 (defn day-name-for [date]
   (.getAsText (.dayOfWeek date)))
 
@@ -39,6 +43,9 @@
 
 (defn group-by-week [workouts]
   (into (sorted-map) (group-by #(previous-sunday (:when %)) workouts)))
+
+(defn workouts-for-week [workouts week]
+  (get (group-by-week workouts) week))
 
 (defn total-miles [workouts]
   (apply + (map :miles workouts)))
